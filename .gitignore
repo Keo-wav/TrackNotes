@@ -1,0 +1,18 @@
+# IDE Settings (Specific to WebStorm/VSCode)
+.idea/
+.vscode/
+*.iml
+
+# Dependency Directories
+node_modules/
+
+# Environment Variables & Secrets
+.env
+*.local
+
+# OS generated files
+Thumbs.db
+.DS_Store
+
+# Docker (Optional - usually keep compose but ignore data)
+pgdata/
