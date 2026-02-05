@@ -18,7 +18,7 @@ export class User {
     example: 'drummer boi',
     description: 'Role of the user in the band',
   })
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   band_role: string | null;
 
   @Column()
@@ -29,6 +29,6 @@ export class User {
   isAdmin: boolean;
 
   @ApiProperty({ required: false, example: 'https://avatar.url/me.png' })
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   profile_picture: string | null;
 }

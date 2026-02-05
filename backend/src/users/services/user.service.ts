@@ -11,6 +11,11 @@ export class UserService {
     private readonly userRepository: Repository<User>,
   ) {}
 
+  async findOne(id: number): Promise<User | null> {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    return this.userRepository.findOneBy({ id_user: id } as any);
+  }
+
   findAll(): Promise<User[]> {
     return this.userRepository.find();
   }

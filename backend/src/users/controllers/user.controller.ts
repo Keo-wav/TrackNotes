@@ -19,6 +19,16 @@ import { EditUserDto } from '../dto/user-edit.dto';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @Get(':id')
+  @ApiOperation({ summary: 'Get a user by id' })
+  async getById(@Param('id') id: string): Promise<User> {
+    const user = await this.userService.findOne(+id);
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+    return user;
+  }
+
   @Get()
   @ApiOperation({ summary: 'Get all users' })
   getAll(): Promise<User[]> {

@@ -23,15 +23,15 @@ export class Project {
     example: 'Demos for the upcoming August release',
     required: false,
   })
-  @Column({ nullable: true })
-  description: string;
+  @Column({ type: 'varchar', nullable: true })
+  description: string | null;
 
   @ApiProperty({ example: 'https://cover-art.url/img.jpg', required: false })
-  @Column({ nullable: true })
-  picture: string;
+  @Column({ type: 'varchar', nullable: true })
+  picture: string | null;
 
   @ManyToOne(() => User, (user) => user.id_user)
-  creator_id: User;
+  creator: User | null;
 
   @OneToMany(() => Track, (track) => track.project)
   tracks: Track[];
