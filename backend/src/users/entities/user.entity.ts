@@ -14,6 +14,13 @@ export class User {
   @Column({ unique: true })
   username: string;
 
+  @ApiProperty({
+    example: 'drummer boi',
+    description: 'Role of the user in the band',
+  })
+  @Column({ nullable: true })
+  band_role: string | null;
+
   @Column()
   password: string;
 
@@ -23,5 +30,5 @@ export class User {
 
   @ApiProperty({ required: false, example: 'https://avatar.url/me.png' })
   @Column({ nullable: true })
-  profile_picture: string;
+  profile_picture: string | null;
 }

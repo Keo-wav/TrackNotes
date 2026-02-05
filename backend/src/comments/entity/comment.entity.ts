@@ -6,8 +6,8 @@ import {
   ManyToOne,
   OneToMany,
 } from 'typeorm';
-import { User } from './user.entity';
-import { Track } from './track.entity';
+import { User } from '../../users/entities/user.entity';
+import { Track } from '../../tracks/entity/track.entity';
 
 @Entity('comments')
 export class Comment {

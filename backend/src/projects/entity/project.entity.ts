@@ -6,8 +6,8 @@ import {
   OneToMany,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-import { User } from './user.entity';
-import { Track } from './track.entity';
+import { User } from '../../users/entities/user.entity';
+import { Track } from '../../tracks/entity/track.entity';
 
 @Entity('projects')
 export class Project {
@@ -30,8 +30,8 @@ export class Project {
   @Column({ nullable: true })
   picture: string;
 
-  @ManyToOne(() => User)
-  creator: User;
+  @ManyToOne(() => User, (user) => user.id_user)
+  creator_id: User;
 
   @OneToMany(() => Track, (track) => track.project)
   tracks: Track[];

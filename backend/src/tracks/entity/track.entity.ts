@@ -7,9 +7,10 @@ import {
   OneToMany,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-import { Project } from './project.entity';
-import { User } from './user.entity';
-import { Comment } from './comment.entity';
+
+import { User } from '../../users/entities/user.entity';
+import { Comment } from '../../comments/entity/comment.entity';
+import { Project } from '../../projects/entity/project.entity';
 
 @Entity('tracks')
 export class Track {
