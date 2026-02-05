@@ -18,7 +18,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         username: 'admin',
         password: configService.get<string>('DB_DEV_PASSWORD'),
         database: 'tracknotes',
-        autoLoadEntities: true,
+        entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: true,
       }),
     }),
