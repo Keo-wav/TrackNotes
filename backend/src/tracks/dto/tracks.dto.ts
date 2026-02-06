@@ -1,0 +1,45 @@
+import { ApiProperty } from '@nestjs/swagger';
+
+export class TracksDto {
+  @ApiProperty({ example: 1 })
+  id_track: number;
+
+  @ApiProperty({ example: 'les pigeons de la mort pt.2' })
+  track_name: string;
+
+  @ApiProperty({ example: 1.02 })
+  version: number;
+
+  @ApiProperty({ example: 'https://storage.url/file.mp3' })
+  file_url: string;
+
+  @ApiProperty({ example: '2026-02-06T12:00:00Z' })
+  uploaded_at: Date;
+
+  @ApiProperty({
+    example: 1,
+    description: 'ID of the project this track belongs to',
+  })
+  project_id: number;
+
+  @ApiProperty({
+    example: 1,
+    description: 'ID of the user who uploaded the track',
+  })
+  uploader_id: number;
+
+  @ApiProperty({
+    example: 2,
+    nullable: true,
+    description: 'ID of the parent track if this is a new version',
+  })
+  parent_track_id: number | null;
+
+  @ApiProperty({
+    type: () => TracksDto,
+    isArray: true,
+    required: false,
+    description: 'List of subsequent versions of this track',
+  })
+  child_versions?: TracksDto[];
+}

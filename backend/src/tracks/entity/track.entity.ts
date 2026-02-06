@@ -43,8 +43,8 @@ export class Track {
   comments: Comment[];
 
   @ManyToOne(() => Track, (track) => track.child_versions, { nullable: true })
-  parent_track: Track;
+  parent_track: Track | null;
 
   @OneToMany(() => Track, (track) => track.parent_track)
-  child_versions: Track[];
+  child_versions: Track[] | null;
 }
