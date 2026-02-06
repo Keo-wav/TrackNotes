@@ -30,10 +30,10 @@ export class CommentController {
     return this.commentService.create(createCommentDto);
   }
 
-  @Get()
-  @ApiOperation({ summary: 'Get all comments' })
-  findAll(): Promise<Comment[]> {
-    return this.commentService.findAll();
+  @Get('track/:id')
+  @ApiOperation({ summary: 'Get all comments for one track' })
+  findByTrack(@Param('id', ParseIntPipe) id: number): Promise<Comment[]> {
+    return this.commentService.findByTrack(id);
   }
 
   @Get(':id')

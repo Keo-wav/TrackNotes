@@ -28,9 +28,11 @@ export class CommentService {
     return this.commentRepository.save(newComment);
   }
 
-  async findAll(): Promise<Comment[]> {
+  async findByTrack(trackId: number): Promise<Comment[]> {
     return this.commentRepository.find({
-      relations: ['author', 'replies', 'replies.author'],
+      where: { track: { id_track: trackId } } as Comment,
+      relations: ['author', 'replies'],
+      order: { created_at: 'ASC' },
     });
   }
 
