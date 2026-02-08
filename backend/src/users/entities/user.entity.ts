@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
+import { Comment } from '../../comments/entity/comment.entity';
 
 @Entity('users')
 export class User {
@@ -31,4 +32,7 @@ export class User {
   @ApiProperty({ required: false, example: 'https://avatar.url/me.png' })
   @Column({ type: 'varchar', nullable: true })
   profile_picture: string | null;
+
+  @OneToMany(() => Comment, (comment) => comment.author)
+  comments: Comment[];
 }

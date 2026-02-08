@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, FindOptionsWhere } from 'typeorm';
 import { Project } from '../entity/project.entity';
 import { CreateProjectDto } from '../dto/project-create.dto';
 import { EditProjectDto } from '../dto/project-edit.dto';
@@ -17,15 +17,21 @@ export class ProjectService {
     return this.projectRepository.find({ relations: ['creator', 'tracks'] });
   }
 
-  async findOne(id: number): Promise<Project | null> {
-    return await this.projectRepository.findOne({
-      where: { id_project: id },
-      relations: ['creator', 'tracks'],
+  async findOne(id: number): Promise<Project> {
+    const project = await this.projectRepository.findOne({
+      where: { id_project: id } as FindOptionsWhere<Project>,
+      relations: ['creator', 'tracks', 'tracks.uploader'],
     });
+
+    if (!project) {
+      throw new NotFoundException(`Project #${id} not found`);
+    }
+
+    return project;
   }
 
   async create(dto: CreateProjectDto): Promise<Project> {
-    const newProject: Project = this.projectRepository.create({
+    const newProject = this.projectRepository.create({
       name: dto.name,
       description: dto.description,
       creator: { id_user: dto.creator } as User,
@@ -33,15 +39,14 @@ export class ProjectService {
     return this.projectRepository.save(newProject);
   }
 
-  async update(id: number, dto: EditProjectDto): Promise<Project | null> {
-    await this.projectRepository.update(id, dto);
-    return this.findOne(id);
+  async update(id: number, dto: EditProjectDto): Promise<Project> {
+    const project = await this.findOne(id);
+    this.projectRepository.merge(project, dto);
+    return await this.projectRepository.save(project);
   }
 
   async remove(id: number): Promise<void> {
     const project = await this.findOne(id);
-    if (!project) throw new NotFoundException(`Project #${id} not found`);
-
     await this.projectRepository.remove(project);
   }
 }

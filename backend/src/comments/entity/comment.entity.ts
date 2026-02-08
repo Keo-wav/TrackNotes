@@ -2,6 +2,7 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
+  JoinColumn,
   CreateDateColumn,
   ManyToOne,
   OneToMany,
@@ -23,17 +24,20 @@ export class Comment {
   @CreateDateColumn()
   created_at: Date;
 
-  @ManyToOne(() => User)
-  author: User;
-
-  @ManyToOne(() => Track, (track) => track.comments)
-  track: Track;
-
   @ManyToOne(() => Comment, (comment) => comment.replies, {
     nullable: true,
     onDelete: 'CASCADE',
   })
+  @JoinColumn({ name: 'parent_id' })
   parent: Comment;
+
+  @ManyToOne(() => User, (user) => user.comments)
+  @JoinColumn({ name: 'author_id' })
+  author: User;
+
+  @ManyToOne(() => Track, (track) => track.comments)
+  @JoinColumn({ name: 'track_id' })
+  track: Track;
 
   @OneToMany(() => Comment, (comment) => comment.parent)
   replies: Comment[];

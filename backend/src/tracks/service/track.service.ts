@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, FindOptionsWhere } from 'typeorm';
 import { Track } from '../entity/track.entity';
 import { CreateTrackDto } from '../dto/track-create.dto';
+import { EditTrackDto } from '../dto/track-edit.dto';
 import { Project } from '../../projects/entity/project.entity';
 import { User } from '../../users/entities/user.entity';
-import { EditTrackDto } from '../dto/track-edit.dto';
 
 @Injectable()
 export class TrackService {
@@ -13,6 +13,28 @@ export class TrackService {
     @InjectRepository(Track)
     private readonly trackRepository: Repository<Track>,
   ) {}
+
+  async findAll(): Promise<Track[]> {
+    return this.trackRepository.find({ relations: ['uploader', 'project'] });
+  }
+
+  async findOne(id: number): Promise<Track> {
+    const track: Track | null = await this.trackRepository.findOne({
+      where: { id_track: id } as FindOptionsWhere<Track>,
+      relations: [
+        'uploader',
+        'project',
+        'parent_track',
+        'child_versions',
+        'comments',
+      ],
+    });
+
+    if (!track) {
+      throw new NotFoundException(`Track with ID ${id} not found`);
+    }
+    return track;
+  }
 
   async create(dto: CreateTrackDto): Promise<Track> {
     const newTrack = this.trackRepository.create({
@@ -29,28 +51,14 @@ export class TrackService {
     return this.trackRepository.save(newTrack);
   }
 
-  findAll(): Promise<Track[]> {
-    return this.trackRepository.find({
-      relations: ['project', 'uploader', 'parent_track', 'child_versions'],
-    });
-  }
-
-  async findOne(id: number): Promise<Track | null> {
-    return this.trackRepository.findOne({
-      where: { id_track: id },
-      relations: ['project', 'uploader', 'comments', 'child_versions'],
-    });
-  }
-
-  async update(id: number, dto: EditTrackDto): Promise<Track | null> {
-    await this.trackRepository.update(id, dto as Track);
-    return this.findOne(id);
+  async update(id: number, dto: EditTrackDto): Promise<Track> {
+    const track = await this.findOne(id);
+    this.trackRepository.merge(track, dto);
+    return this.trackRepository.save(track);
   }
 
   async remove(id: number): Promise<void> {
-    const result = await this.trackRepository.delete(id);
-    if (result.affected === 0) {
-      throw new NotFoundException(`Track #${id} not found`);
-    }
+    const track = await this.findOne(id);
+    await this.trackRepository.remove(track);
   }
 }

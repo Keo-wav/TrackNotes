@@ -4,8 +4,6 @@ import { Repository } from 'typeorm';
 import { Comment } from '../entity/comment.entity';
 import { CreateCommentDto } from '../dto/comment-create.dto';
 import { EditCommentDto } from '../dto/comment-edit.dto';
-import { User } from '../../users/entities/user.entity';
-import { Track } from '../../tracks/entity/track.entity';
 
 @Injectable()
 export class CommentService {
@@ -18,14 +16,23 @@ export class CommentService {
     const newComment = this.commentRepository.create({
       content: dto.content,
       timestamp: dto.timestamp ?? undefined,
-      author: { id_user: dto.author_id } as User,
-      track: { id_track: dto.track_id } as Track,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      author: { id_user: dto.author_id } as any,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      track: { id_track: dto.track_id } as any,
+      // Ensure we only attach a parent if parent_id is actually provided and truthy
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       parent: dto.parent_id
-        ? ({ id_comment: dto.parent_id } as Comment)
+        ? ({ id_comment: dto.parent_id } as any)
         : undefined,
     });
 
-    return this.commentRepository.save(newComment);
+    try {
+      return await this.commentRepository.save(newComment);
+    } catch (error) {
+      console.error('TypeORM Save Error:', error);
+      throw error;
+    }
   }
 
   async findByTrack(trackId: number): Promise<Comment[]> {
