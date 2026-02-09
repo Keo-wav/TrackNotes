@@ -7,7 +7,7 @@
 node_modules/
 
 # Environment Variables & Secrets
-.env
+backend/.env
 *.local
 
 # OS generated files

@@ -7,7 +7,7 @@ services:
     restart: always
     environment:
       POSTGRES_USER: admin
-      POSTGRES_PASSWORD: band_secret_password
+      POSTGRES_PASSWORD: DB_DEV_PASSWORD
       POSTGRES_DB: tracknotes
     ports:
       - "5432:5432"

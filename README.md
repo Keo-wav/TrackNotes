@@ -1,4 +1,4 @@
-# 🎵 TrackNotes
+# TrackNotes
 
 Does the following sound familiar to you?
 - "Hey I thought about the synth layer at 01:12 in the latest version of our song"
@@ -10,13 +10,13 @@ A collaborative music versioning and feedback platform for bands.
 Upload demos, visualize waveforms, leave timestamped comments and
 make educated and impactful decisions about the music you make.
 
-## 🚀 Tech Stack
+## Tech Stack
 * **Frontend:** Angular (Standalone) & [wavesurfer.js](https://wavesurfer.xyz/)
 * **Backend:** NestJS & [TypeORM](https://typeorm.io/)
 * **Database:** PostgreSQL (Hosted on Neon/Supabase)
 * **DevOps:** Docker (Target environment) & Nginx
 
-## 📁 Project Structure
+## Project Structure
 ```text
 tracknote-workspace/
 ├── backend/          # NestJS API (Port 3000)
