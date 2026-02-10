@@ -1,5 +1,5 @@
 import { Component, computed, inject} from '@angular/core';
-import {TrackService} from '../../../../services/track.service';
+import {TrackService} from '../../../../services/track/track.service';
 
 @Component({
   selector: 'app-track-comments',
