@@ -6,6 +6,7 @@ import { CommentMapper } from '../../comments/mappers/comment.mapper';
 export class UserMapper {
   static mapUserEntityToDto(user: User): UserDto {
     return {
+      id_user: user.id_user,
       username: user.username,
       band_role: user.band_role ?? null,
       password: user.password,
@@ -16,6 +17,7 @@ export class UserMapper {
 
   static mapUserEntityToDtoWithComments(user: User): UserWithCommentsDto {
     return {
+      id_user: user.id_user,
       username: user.username,
       band_role: user.band_role ?? null,
       password: user.password,

@@ -1,6 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class ProjectDto {
+  @ApiProperty({ example: 11 })
+  id_project: number;
+
   @ApiProperty({ example: 'Neon Nights' })
   name: string;
 

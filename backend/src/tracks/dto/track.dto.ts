@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class TracksDto {
+export class TrackDto {
   @ApiProperty({ example: 1 })
   id_track: number;
 
@@ -36,10 +36,10 @@ export class TracksDto {
   parent_track_id: number | null;
 
   @ApiProperty({
-    type: () => TracksDto,
+    type: () => TrackDto,
     isArray: true,
     required: false,
     description: 'List of subsequent versions of this track',
   })
-  child_versions?: TracksDto[];
+  child_versions?: TrackDto[];
 }

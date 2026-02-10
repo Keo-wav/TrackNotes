@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { UserDto } from '../../users/dto/user.dto';
 
 export class CommentDto {
   @ApiProperty({ example: 501 })
@@ -14,7 +15,7 @@ export class CommentDto {
   created_at: Date;
 
   @ApiProperty({ description: 'The user who wrote this' })
-  author: { id_user: number; username: string };
+  author: UserDto;
 
   @ApiProperty({ example: 10, description: 'The track ID' })
   track_id: number;
@@ -24,5 +25,5 @@ export class CommentDto {
     isArray: true,
     description: 'Replies to this comment',
   })
-  replies: CommentDto[];
+  replies: CommentDto[] | null;
 }
