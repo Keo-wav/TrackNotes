@@ -9,6 +9,7 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { Comment } from '../entity/comment.entity';
 import { CommentService } from '../service/comment.service';
 import { CreateCommentDto } from '../dto/comment-create.dto';
 import { EditCommentDto } from '../dto/comment-edit.dto';
@@ -33,6 +34,12 @@ export class CommentController {
     return CommentMapper.mapCommentEntityToDto(
       await this.commentService.create(createCommentDto),
     );
+  }
+
+  @Get()
+  @ApiOperation({ summary: 'Get all comments across all tracks' })
+  findAll(): Promise<Comment[]> {
+    return this.commentService.findAll();
   }
 
   @Get('track/:id')

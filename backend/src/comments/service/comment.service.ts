@@ -35,6 +35,10 @@ export class CommentService {
     }
   }
 
+  async findAll(): Promise<Comment[]> {
+    return this.commentRepository.find();
+  }
+
   async findByTrack(trackId: number): Promise<Comment[]> {
     return this.commentRepository.find({
       where: { track: { id_track: trackId } } as Comment,
