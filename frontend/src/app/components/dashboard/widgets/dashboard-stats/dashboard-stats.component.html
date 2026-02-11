@@ -1,1 +1,29 @@
-<p>dashboard-stats works!</p>
+<div class="container">
+  <div class="stats-card">
+    <div class="stats-logo">
+      <i class="pi pi-folder"></i>
+    </div>
+    <div class="stats-data">
+      <div class="stats-number">{{ totalProjects() }}</div>
+      <div class="stats-label">active projects</div>
+    </div>
+  </div>
+  <div class="stats-card">
+    <div class="stats-logo">
+      <i class="pi pi-play-circle"></i>
+    </div>
+    <div class="stats-data">
+      <div class="stats-number">{{ totalTracks() }}</div>
+      <div class="stats-label">total tracks</div>
+    </div>
+  </div>
+  <div class="stats-card">
+    <div class="stats-logo">
+      <i class="pi pi-comment"></i>
+    </div>
+    <div class="stats-data">
+      <div class="stats-number">{{ totalComments() }}</div>
+      <div class="stats-label">comments</div>
+    </div>
+  </div>
+</div>

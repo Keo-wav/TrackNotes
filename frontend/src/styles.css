@@ -12,7 +12,23 @@ html, body {
   color: var(--font-color);
 }
 
+/* DATETIME FORMATTING */
+
 .timestamp {
   font-family: 'Courier New', monospace;
   font-variant-numeric: tabular-nums;
+}
+
+/* ICONS COLORS */
+
+.pi-folder {
+  color: #3b82f6;
+}
+
+.pi-play-circle {
+  color: #a855f7;
+}
+
+.pi-comment {
+  color: #22c55e;
 }

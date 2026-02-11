@@ -1,0 +1,41 @@
+header {
+  min-height: 2rem;
+  background-color: #1e1e1e;
+  align-content: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0.5rem;
+  justify-content: space-between;
+}
+
+.nav-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  margin: 0;
+  list-style: none;
+}
+
+.brand-name {
+  font-size: 1.3rem;
+}
+
+.motto {
+  color: gray;
+  font-size: 0.8rem;
+  font-style: italic;
+  margin-left: 1rem;
+}
+
+.title-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+}
+
+.nav-link {
+  font-weight: bold;
+  cursor: pointer;
+}
