@@ -13,11 +13,15 @@ export class TrackService {
     this._selectedTrack.set(track);
   }
 
-  getTrack(id: number): Observable<TrackDto> {
+  getTracks(): Observable<TrackDto[]> {
+    return this.http.get<TrackDto[]>(apiUrls.tracks);
+  }
+
+  getTrackById(id: number): Observable<TrackDto> {
     return this.http.get<TrackDto>(`${apiUrls.tracks}/${id}`);
   }
 
-  getProjectTracks(id: number): Observable<TrackDto[]> {
+  getTracksByProject(id: number): Observable<TrackDto[]> {
     return this.http.get<TrackDto[]>(`${apiUrls.tracks}?id=${id}`);
   }
 }

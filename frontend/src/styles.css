@@ -1,1 +1,18 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --bg-color: #121212;
+  --font-color: #ffffff;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: "Roboto", sans-serif;
+  background-color: var(--bg-color);
+  color: var(--font-color);
+}
+
+.timestamp {
+  font-family: 'Courier New', monospace;
+  font-variant-numeric: tabular-nums;
+}
