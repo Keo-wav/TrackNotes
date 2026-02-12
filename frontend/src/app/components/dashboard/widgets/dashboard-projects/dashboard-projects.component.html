@@ -1,36 +1,34 @@
 <div class="container">
   @for (project of projects$ | async; track project.id_project) {
     <div class="project-card">
-      <div class="card-header">
-        <i class="pi pi-folder" style="color: #3B82F6;"></i>
-        <aside class="project-creation-date">
-          <i class="pi pi-clock"></i> 2 days ago
-        </aside>
-      </div>
+<!--      <div class="card-header">-->
+<!--        <i class="pi pi-folder" style="color: #3B82F6;"></i>-->
+<!--        <aside class="project-creation-date">-->
+<!--          <i class="pi pi-clock"></i> 2 days ago-->
+<!--        </aside>-->
+<!--      </div>-->
 
       <div class="project-title">{{ project.name }}</div>
       <div class="project-description">
         {{ project.description || 'No description provided for this project.' }}
       </div>
-
+      <hr>
       <div class="project-pictograms">
         <div class="stat">
           <i class="pi pi-play-circle"></i>
-          <span>{{ project.totalTracks }}</span> </div>
+          <span>{{ project.trackCount }}</span> </div>
         <div class="stat">
           <i class="pi pi-comment"></i>
-          <span>{{ project.totalComments }}</span> </div>
+          <span>{{ project.commentCount }}</span> </div>
       </div>
 
-      <hr>
-
-      <div class="project-footer">
-        <div class="user-avatars">
-          <span class="avatar blue">A</span>
-          <span class="avatar purple">S</span>
-          <span class="avatar pink">M</span>
-        </div>
-      </div>
+<!--      <div class="project-footer">-->
+<!--        <div class="user-avatars">-->
+<!--          <span class="avatar blue">A</span>-->
+<!--          <span class="avatar purple">S</span>-->
+<!--          <span class="avatar pink">M</span>-->
+<!--        </div>-->
+<!--      </div>-->
     </div>
   } @empty {
     <div class="no-projects">
