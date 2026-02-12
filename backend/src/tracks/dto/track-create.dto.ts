@@ -10,6 +10,9 @@ export class CreateTrackDto {
   @ApiProperty({ example: 'https://storage.url/file.mp3' })
   file_url: string;
 
+  @ApiProperty({ example: 72 })
+  duration?: number;
+
   @ApiProperty({ example: 3, description: 'The project this track belongs to' })
   project_id: number;
 
@@ -22,5 +25,5 @@ export class CreateTrackDto {
     nullable: true,
     description: 'ID of the previous version',
   })
-  parent_track_id?: number | null;
+  parent_track_id?: number;
 }

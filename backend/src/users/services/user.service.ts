@@ -1,7 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { User } from '../entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, FindOptionsWhere } from 'typeorm';
+import { User } from '../entities/user.entity';
+import { Repository } from 'typeorm';
+import { CreateUserDto } from '../dto/user-create.dto';
 import { EditUserDto } from '../dto/user-edit.dto';
 
 @Injectable()
@@ -11,10 +12,12 @@ export class UserService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async findOne(id: number): Promise<User> {
-    const user = await this.userRepository.findOneBy({
-      id_user: id,
-    } as FindOptionsWhere<User>);
+  async findOneOrThrow(id: number): Promise<User> {
+    const user = await this.userRepository
+      .createQueryBuilder('user')
+      .loadRelationCountAndMap('user.commentCount', 'user.comments')
+      .where('user.id_user = :id', { id })
+      .getOne();
 
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
@@ -22,23 +25,29 @@ export class UserService {
     return user;
   }
 
-  findAll(): Promise<User[]> {
-    return this.userRepository.find();
+  async findAll(): Promise<User[]> {
+    return this.userRepository
+      .createQueryBuilder('user')
+      .loadRelationCountAndMap('user.commentCount', 'user.comments')
+      .getMany();
   }
 
-  create(userData: Partial<User>): Promise<User> {
-    const newUser = this.userRepository.create(userData);
-    return this.userRepository.save(newUser);
+  async create(dto: CreateUserDto): Promise<User> {
+    // TODO : hash password
+    const newUser = this.userRepository.create(dto);
+    const saved = await this.userRepository.save(newUser);
+    return this.findOneOrThrow(saved.id_user);
   }
 
-  async update(id: number, updatedUser: EditUserDto): Promise<User> {
-    const user = await this.findOne(id);
-    this.userRepository.merge(user, updatedUser);
-    return this.userRepository.save(user);
+  async update(id: number, dto: EditUserDto): Promise<User> {
+    const user = await this.findOneOrThrow(id);
+    this.userRepository.merge(user, dto);
+    await this.userRepository.save(user);
+    return this.findOneOrThrow(id);
   }
 
   async remove(id: number): Promise<void> {
-    const user = await this.findOne(id);
+    const user = await this.findOneOrThrow(id);
     await this.userRepository.remove(user);
   }
 }

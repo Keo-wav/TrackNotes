@@ -12,9 +12,10 @@ export class TrackDto {
 
   @ApiProperty({ example: 'https://storage.url/file.mp3' })
   file_url: string;
+  duration: number | null;
 
   @ApiProperty({ example: '2026-02-06T12:00:00Z' })
-  uploaded_at: Date;
+  uploaded_at: string;
 
   @ApiProperty({
     example: 1,
@@ -41,5 +42,8 @@ export class TrackDto {
     required: false,
     description: 'List of subsequent versions of this track',
   })
+  // Only include children if specifically requested to avoid huge payloads
   child_versions?: TrackDto[];
+
+  commentCount: number;
 }

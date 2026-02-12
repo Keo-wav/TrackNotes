@@ -35,4 +35,6 @@ export class User {
 
   @OneToMany(() => Comment, (comment) => comment.author)
   comments: Comment[];
+
+  commentCount?: number;
 }

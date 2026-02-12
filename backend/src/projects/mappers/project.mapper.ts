@@ -6,11 +6,12 @@ export class ProjectMapper {
     return {
       id_project: project.id_project,
       name: project.name,
-      description: project.description,
-      picture: project.picture,
-      creator_id: project.creator.id_user,
-      trackCount: project.tracks.length || 0,
-      commentCount: project.comments.length || 0,
+      description: project.description ?? null,
+      picture: project.picture ?? null,
+      // Use optional chaining just in case a creator isn't joined
+      creator_id: project.creator?.id_user ?? 0,
+      trackCount: project.trackCount ?? project.tracks?.length ?? 0,
+      commentCount: project.commentCount ?? project.comments?.length ?? 0,
     };
   }
 

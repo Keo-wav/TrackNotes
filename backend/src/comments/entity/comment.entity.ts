@@ -20,7 +20,7 @@ export class Comment {
   content: string;
 
   @Column({ type: 'float', nullable: true })
-  timestamp: number;
+  timestamp: number | null;
 
   @CreateDateColumn()
   created_at: Date;
@@ -30,7 +30,7 @@ export class Comment {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'parent_id' })
-  parent: Comment;
+  parent: Comment | null;
 
   @ManyToOne(() => User, (user) => user.comments)
   @JoinColumn({ name: 'author_id' })
@@ -38,7 +38,7 @@ export class Comment {
 
   @ManyToOne(() => Track, (track) => track.comments)
   @JoinColumn({ name: 'track_id' })
-  track: Track;
+  track: Track | null;
 
   @ManyToOne(() => Project, (project) => project.comments)
   @JoinColumn({ name: 'project_id' })

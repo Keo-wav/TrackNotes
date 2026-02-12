@@ -1,20 +1,19 @@
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
   ParseIntPipe,
+  Patch,
+  Post,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { Comment } from '../entity/comment.entity';
 import { CommentService } from '../service/comment.service';
-import { CreateCommentDto } from '../dto/comment-create.dto';
-import { EditCommentDto } from '../dto/comment-edit.dto';
 import { CommentDto } from '../dto/comment.dto';
+import { CreateCommentDto } from '../dto/comment-create.dto';
 import { CommentMapper } from '../mappers/comment.mapper';
+import { EditCommentDto } from '../dto/comment-edit.dto';
 
 @ApiTags('comments')
 @Controller('comments')
@@ -23,71 +22,35 @@ export class CommentController {
 
   @Post()
   @ApiOperation({ summary: 'Create a new comment or reply' })
-  @ApiResponse({
-    status: 201,
-    description: 'Comment created successfully',
-    type: CommentDto,
-  })
-  async create(
-    @Body() createCommentDto: CreateCommentDto,
-  ): Promise<CommentDto> {
-    return CommentMapper.mapCommentEntityToDto(
-      await this.commentService.create(createCommentDto),
-    );
-  }
-
-  @Get()
-  @ApiOperation({ summary: 'Get all comments across all tracks' })
-  findAll(): Promise<Comment[]> {
-    return this.commentService.findAll();
+  @ApiResponse({ status: 201, type: CommentDto })
+  async create(@Body() dto: CreateCommentDto): Promise<CommentDto> {
+    const entity = await this.commentService.create(dto);
+    return CommentMapper.mapCommentEntityToDto(entity);
   }
 
   @Get('track/:id')
-  @ApiOperation({ summary: 'Get all comments for one track' })
-  @ApiResponse({
-    status: 200,
-    description: 'Comments found',
-    type: CommentDto,
-    isArray: true,
-  })
+  @ApiOperation({ summary: 'Get all comments for a specific track' })
   async findByTrack(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<CommentDto[]> {
-    return CommentMapper.mapCommentEntitiesToDtos(
-      await this.commentService.findByTrack(id),
-    );
-  }
-
-  @Get(':id')
-  @ApiOperation({ summary: 'Get a comment by its ID' })
-  @ApiResponse({ status: 200, type: CommentDto })
-  @ApiResponse({ status: 404, description: 'Comment not found' })
-  async getById(@Param('id', ParseIntPipe) id: number): Promise<CommentDto> {
-    return CommentMapper.mapCommentEntityToDto(
-      await this.commentService.findOne(id),
-    );
+    const entities = await this.commentService.findByTrack(id);
+    return CommentMapper.mapCommentEntitiesToDtos(entities);
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Update comment content' })
-  @ApiResponse({
-    status: 201,
-    description: 'Comment updated successfully',
-    type: CommentDto,
-  })
+  @ApiOperation({ summary: 'Update comment text' })
   async update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() editCommentDto: EditCommentDto,
+    @Body() dto: EditCommentDto,
   ): Promise<CommentDto> {
-    return CommentMapper.mapCommentEntityToDto(
-      await this.commentService.update(id, editCommentDto),
-    );
+    const entity = await this.commentService.update(id, dto);
+    return CommentMapper.mapCommentEntityToDto(entity);
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Delete a comment' })
-  @ApiResponse({ status: 200, description: 'Comment deleted successfully' })
-  remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
+  @ApiOperation({ summary: 'Remove a comment and its replies' })
+  @ApiResponse({ status: 204, description: 'Deleted successfully' })
+  async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
     return this.commentService.remove(id);
   }
 }

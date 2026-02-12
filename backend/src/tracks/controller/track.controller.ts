@@ -3,15 +3,18 @@ import {
   Get,
   Post,
   Body,
+  Patch,
   Param,
   Delete,
   ParseIntPipe,
-  Patch,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { TrackService } from '../service/track.service';
+import { TrackMapper } from '../mappers/track.mapper';
+import { TrackDto } from '../dto/track.dto';
 import { CreateTrackDto } from '../dto/track-create.dto';
-import { Track } from '../entity/track.entity';
 import { EditTrackDto } from '../dto/track-edit.dto';
 
 @ApiTags('tracks')
@@ -21,41 +24,41 @@ export class TrackController {
 
   @Post()
   @ApiOperation({ summary: 'Upload a new track or a new version' })
-  @ApiResponse({ status: 201, type: Track })
-  create(@Body() createTrackDto: CreateTrackDto): Promise<Track> {
-    return this.trackService.create(createTrackDto);
+  async create(@Body() dto: CreateTrackDto): Promise<TrackDto> {
+    const track = await this.trackService.create(dto);
+    return TrackMapper.mapTrackEntityToDto(track);
   }
 
   @Get()
-  @ApiOperation({ summary: 'Get all tracks across all projects' })
-  findAll(): Promise<Track[]> {
-    return this.trackService.findAll();
+  @ApiOperation({ summary: 'Get all tracks' })
+  async findAll(): Promise<TrackDto[]> {
+    const tracks = await this.trackService.findAll();
+    return TrackMapper.mapTrackEntitiesToDtos(tracks);
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Get a single track by its ID' })
-  @ApiResponse({ status: 200, type: Track })
-  @ApiResponse({ status: 404, description: 'Track not found' })
-  getById(@Param('id', ParseIntPipe) id: number): Promise<Track> {
-    return this.trackService.findOne(id);
+  @ApiOperation({
+    summary: 'Get a track with full version history and comment count',
+  })
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<TrackDto> {
+    const track = await this.trackService.findOneOrThrow(id);
+    return TrackMapper.mapTrackEntityToDto(track);
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Update track metadata' })
-  update(
+  @ApiOperation({ summary: 'Update track info' })
+  async update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() editTrackDto: EditTrackDto,
-  ): Promise<Track> {
-    return this.trackService.update(id, editTrackDto);
+    @Body() dto: EditTrackDto,
+  ): Promise<TrackDto> {
+    const track = await this.trackService.update(id, dto);
+    return TrackMapper.mapTrackEntityToDto(track);
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Remove a track' })
-  @ApiResponse({ status: 200, description: 'Track deleted successfully' })
-  async remove(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<{ message: string }> {
-    await this.trackService.remove(id);
-    return { message: `Track #${id} has been deleted` };
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({ summary: 'Delete a track' })
+  async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    return this.trackService.remove(id);
   }
 }

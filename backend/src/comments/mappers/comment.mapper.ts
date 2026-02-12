@@ -1,6 +1,5 @@
 import { CommentDto } from '../dto/comment.dto';
 import { Comment } from '../entity/comment.entity';
-import { User } from '../../users/entities/user.entity';
 
 export class CommentMapper {
   static mapCommentEntityToDto(comment: Comment): CommentDto {
@@ -9,14 +8,13 @@ export class CommentMapper {
       content: comment.content,
       timestamp: comment.timestamp,
       created_at: comment.created_at,
-      author: {
-        id_user: comment.author.id_user,
-        username: comment.author.username,
-      } as User,
-      track_id: comment.track.id_track,
-      replies: comment.replies
-        ? comment.replies.map((reply) => this.mapCommentEntityToDto(reply))
-        : [],
+      parent_id: comment.parent?.id_comment ?? null,
+      author_id: comment.author.id_user,
+      author_name: comment.author.username,
+      author_avatar: comment.author.profile_picture ?? null,
+      track_id: comment.track?.id_track ?? null,
+      project_id: comment.project.id_project,
+      reply_count: comment.replies.length ?? null,
     };
   }
 

@@ -1,20 +1,19 @@
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
   ParseIntPipe,
+  Patch,
+  Post,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ProjectService } from '../service/project.service';
-import { Project } from '../entity/project.entity';
 import { CreateProjectDto } from '../dto/project-create.dto';
-import { EditProjectDto } from '../dto/project-edit.dto';
-import { ProjectMapper } from '../mappers/project.mapper';
 import { ProjectDto } from '../dto/project.dto';
+import { ProjectMapper } from '../mappers/project.mapper';
+import { EditProjectDto } from '../dto/project-edit.dto';
 
 @ApiTags('projects')
 @Controller('projects')
@@ -22,55 +21,39 @@ export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Create a new musical project' })
-  @ApiResponse({
-    status: 201,
-    description: 'The project has been successfully created.',
-    type: Project,
-  })
-  create(@Body() createProjectDto: CreateProjectDto): Promise<Project> {
-    return this.projectService.create(createProjectDto);
+  @ApiOperation({ summary: 'Create a new project' })
+  async create(@Body() dto: CreateProjectDto): Promise<ProjectDto> {
+    const entity = await this.projectService.create(dto);
+    return ProjectMapper.mapProjectEntityToDto(entity);
   }
 
   @Get()
-  @ApiOperation({ summary: 'List all projects' })
+  @ApiOperation({ summary: 'List all projects with metadata' })
   async findAll(): Promise<ProjectDto[]> {
-    return ProjectMapper.mapProjectEntitiesToDtos(
-      await this.projectService.findAll(),
-    );
+    const entities = await this.projectService.findAll();
+    return ProjectMapper.mapProjectEntitiesToDtos(entities);
   }
 
   @Get(':id')
-  @ApiOperation({
-    summary: 'Get project details, including creator and tracks',
-  })
-  @ApiResponse({ status: 200, type: ProjectDto })
-  @ApiResponse({ status: 404, description: 'Project not found.' })
+  @ApiOperation({ summary: 'Get detailed project info' })
   async findOne(@Param('id', ParseIntPipe) id: number): Promise<ProjectDto> {
-    return ProjectMapper.mapProjectEntityToDto(
-      await this.projectService.findOne(id),
-    );
+    const entity = await this.projectService.findOneOrThrow(id);
+    return ProjectMapper.mapProjectEntityToDto(entity);
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Update project metadata' })
-  @ApiResponse({ status: 200, type: Project })
-  update(
+  @ApiOperation({ summary: 'Update project settings' })
+  async update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() editProjectDto: EditProjectDto,
-  ): Promise<Project> {
-    return this.projectService.update(id, editProjectDto);
+    @Body() dto: EditProjectDto,
+  ): Promise<ProjectDto> {
+    const entity = await this.projectService.update(id, dto);
+    return ProjectMapper.mapProjectEntityToDto(entity);
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Delete a project and its associated data' })
-  @ApiResponse({ status: 200, description: 'Project deleted successfully.' })
-  async remove(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<{ message: string }> {
-    await this.projectService.remove(id);
-    return {
-      message: `Project #${id} and its associated tracks have been removed.`,
-    };
+  @ApiOperation({ summary: 'Delete project and all associated data' })
+  async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    return this.projectService.remove(id);
   }
 }
