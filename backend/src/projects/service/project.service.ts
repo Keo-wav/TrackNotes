@@ -13,8 +13,10 @@ export class ProjectService {
     private readonly projectRepository: Repository<Project>,
   ) {}
 
-  findAll(): Promise<Project[]> {
-    return this.projectRepository.find({ relations: ['creator', 'tracks'] });
+  async findAll(): Promise<Project[]> {
+    return this.projectRepository.find({
+      relations: ['creator', 'tracks', 'comments'],
+    });
   }
 
   async findOne(id: number): Promise<Project> {

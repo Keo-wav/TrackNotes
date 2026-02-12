@@ -13,6 +13,8 @@ import { ProjectService } from '../service/project.service';
 import { Project } from '../entity/project.entity';
 import { CreateProjectDto } from '../dto/project-create.dto';
 import { EditProjectDto } from '../dto/project-edit.dto';
+import { ProjectMapper } from '../mappers/project.mapper';
+import { ProjectDto } from '../dto/project.dto';
 
 @ApiTags('projects')
 @Controller('projects')
@@ -32,18 +34,22 @@ export class ProjectController {
 
   @Get()
   @ApiOperation({ summary: 'List all projects' })
-  findAll(): Promise<Project[]> {
-    return this.projectService.findAll();
+  async findAll(): Promise<ProjectDto[]> {
+    return ProjectMapper.mapProjectEntitiesToDtos(
+      await this.projectService.findAll(),
+    );
   }
 
   @Get(':id')
   @ApiOperation({
     summary: 'Get project details, including creator and tracks',
   })
-  @ApiResponse({ status: 200, type: Project })
+  @ApiResponse({ status: 200, type: ProjectDto })
   @ApiResponse({ status: 404, description: 'Project not found.' })
-  findOne(@Param('id', ParseIntPipe) id: number): Promise<Project> {
-    return this.projectService.findOne(id);
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<ProjectDto> {
+    return ProjectMapper.mapProjectEntityToDto(
+      await this.projectService.findOne(id),
+    );
   }
 
   @Patch(':id')

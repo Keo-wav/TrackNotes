@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { Track } from '../../tracks/entity/track.entity';
+import { Project } from '../../projects/entity/project.entity';
 
 @Entity('comments')
 export class Comment {
@@ -38,6 +39,10 @@ export class Comment {
   @ManyToOne(() => Track, (track) => track.comments)
   @JoinColumn({ name: 'track_id' })
   track: Track;
+
+  @ManyToOne(() => Project, (project) => project.comments)
+  @JoinColumn({ name: 'project_id' })
+  project: Project;
 
   @OneToMany(() => Comment, (comment) => comment.parent)
   replies: Comment[];

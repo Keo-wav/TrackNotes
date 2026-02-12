@@ -26,4 +26,16 @@ export class ProjectDto {
     description: 'The ID of the user who owns this project',
   })
   creator_id: number;
+
+  @ApiProperty({
+    example: 2,
+    description: 'The number of tracks of this project',
+  })
+  trackCount: number;
+
+  @ApiProperty({
+    example: 6,
+    description: 'The number of comments of this project',
+  })
+  commentCount: number;
 }
