@@ -3,5 +3,7 @@ export interface ProjectDto {
   name: string,
   description: string | null,
   picture: string | null,
-  creator_id: number
+  creator_id: number,
+  totalTracks: number,
+  totalComments: number
 }
