@@ -37,6 +37,20 @@ export class CommentService {
     return comment;
   }
 
+  /**
+   * Internal helper to ensure we always get a full entity or a 404
+   */
+  async findAllOrThrow(
+    relations: string[] = ['author', 'track', 'project', 'parent'],
+  ): Promise<Comment[]> {
+    const comments = await this.commentRepository.find({ relations });
+
+    if (!comments) {
+      throw new NotFoundException(`Comments not found`);
+    }
+    return comments;
+  }
+
   async create(dto: CreateCommentDto): Promise<Comment> {
     // 1. Initialize entity with basic info
     const comment = this.commentRepository.create({

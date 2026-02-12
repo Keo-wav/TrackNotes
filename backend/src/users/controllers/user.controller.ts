@@ -49,8 +49,7 @@ export class UserController {
   async getFullProfile(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<UserWithCommentsDto> {
-    // Note: You'd need to ensure the service/query builder joins 'comments' for this specific call
-    const user = await this.userService.findOneOrThrow(id);
+    const user = await this.userService.findFullProfileOrThrow(id);
     return UserMapper.mapUserEntityToDtoWithComments(user);
   }
 

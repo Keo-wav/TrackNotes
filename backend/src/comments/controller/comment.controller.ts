@@ -28,6 +28,24 @@ export class CommentController {
     return CommentMapper.mapCommentEntityToDto(entity);
   }
 
+  @Get()
+  @ApiOperation({ summary: 'Get all comments across all tracks' })
+  async findAll(): Promise<CommentDto[]> {
+    return CommentMapper.mapCommentEntitiesToDtos(
+      await this.commentService.findAllOrThrow(),
+    );
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'Get a comment by its ID' })
+  @ApiResponse({ status: 200, type: CommentDto })
+  @ApiResponse({ status: 404, description: 'Comment not found' })
+  async getById(@Param('id', ParseIntPipe) id: number): Promise<CommentDto> {
+    return CommentMapper.mapCommentEntityToDto(
+      await this.commentService.findOneOrThrow(id),
+    );
+  }
+
   @Get('track/:id')
   @ApiOperation({ summary: 'Get all comments for a specific track' })
   async findByTrack(

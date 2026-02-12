@@ -25,6 +25,22 @@ export class UserService {
     return user;
   }
 
+  async findFullProfileOrThrow(id: number): Promise<User> {
+    const user = await this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.comments', 'comment')
+      .leftJoinAndSelect('comment.author', 'author')
+      .leftJoinAndSelect('comment.project', 'project')
+      .loadRelationCountAndMap('user.commentCount', 'user.comments')
+      .where('user.id_user = :id', { id })
+      .getOne();
+
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+    return user;
+  }
+
   async findAll(): Promise<User[]> {
     return this.userRepository
       .createQueryBuilder('user')
