@@ -1,8 +1,8 @@
 import { Component, inject, OnInit, signal} from '@angular/core';
-import {TrackService} from '../../../../services/track/track.service';
-import {ProjectService} from '../../../../services/project/project.service';
-import {CommentService} from '../../../../services/comment/comment.service';
-import {forkJoin, tap} from 'rxjs';
+import { TrackService } from '../../../../services/track/track.service';
+import { ProjectService } from '../../../../services/project/project.service';
+import { CommentService } from '../../../../services/comment/comment.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard-stats',
@@ -20,9 +20,9 @@ export class DashboardStatsComponent implements OnInit {
 
   ngOnInit(): void {
     forkJoin({
-      tracks: this.trackService.getTracks().pipe(tap(data => console.log('tracks : ' + JSON.stringify(data)))),
-      projects: this.projectService.getProjects().pipe(tap(data => console.log('projects : ' + JSON.stringify(data)))),
-      comments: this.commentService.getComments().pipe(tap(data => console.log('comments : ' + JSON.stringify(data)))),
+      tracks: this.trackService.getTracks(),
+      projects: this.projectService.getProjects(),
+      comments: this.commentService.getComments(),
     }).subscribe({
       next: (data) => {
         this.totalTracks.set(data.tracks.length);
