@@ -1,3 +1,23 @@
-<div class="container">
-  <p>Track waveform section</p>
+<div class="player-card">
+  <div class="waveform-wrapper" [class.hidden]="!currentTrack()">
+    <div #waveformContainer></div>
+  </div>
+
+  @if (currentTrack(); as track) {
+    <div class="track-info">
+      <h3>{{ track.track_name }}</h3>
+      <!--<p class="artist">The Band</p>-->
+    </div>
+
+    <div class="controls">
+      <button class="play-btn" (click)="togglePlay()">
+        <i class="pi pi-play"></i>
+      </button>
+      <span class="timestamp"></span>
+    </div>
+  } @else {
+    <div class="player-placeholder">
+      <p>Select a track to start the session 🔥</p>
+    </div>
+  }
 </div>

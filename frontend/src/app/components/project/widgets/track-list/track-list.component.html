@@ -1,6 +1,6 @@
 <div class="tracklist-container">
   @for (track of tracks$ | async; track track.id_track) {
-    <div class="track-item" (click)="trackService.selectTrack(track)" style="cursor: pointer">
+    <div class="track-item" (click)="trackService.selectTrack(track)">
       <span class="track-name">{{ track.track_name }}</span>
       <span class="version">v{{ track.version }}</span>
     </div>

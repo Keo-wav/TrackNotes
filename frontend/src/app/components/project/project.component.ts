@@ -14,6 +14,7 @@ import {ProjectDto} from '../../models/project/project.dto';
     ProjectComments,
     TrackCommentsComponent,
     TrackListComponent,
+    TrackPlayerComponent,
     TrackPlayerComponent
   ],
   templateUrl: './project.component.html',

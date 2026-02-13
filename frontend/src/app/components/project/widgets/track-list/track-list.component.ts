@@ -1,6 +1,6 @@
-import { Component, inject, Input, OnInit} from '@angular/core';
+import { Component, inject, Input, OnChanges } from '@angular/core';
 import {TrackService} from '../../../../services/track/track.service';
-import {Observable} from 'rxjs';
+import {Observable, tap} from 'rxjs';
 import {TrackDto} from '../../../../models/track.dto';
 import {AsyncPipe} from '@angular/common';
 
@@ -13,13 +13,15 @@ import {AsyncPipe} from '@angular/common';
   templateUrl: './track-list.component.html',
   styleUrl: './track-list.component.css'
 })
-export class TrackListComponent implements OnInit {
+export class TrackListComponent implements OnChanges {
   @Input({ required: true }) projectId!: number;
 
   trackService = inject(TrackService);
   tracks$!: Observable<TrackDto[]>;
 
-  ngOnInit(): void {
-    // this.tracks$ = this.trackService.getTracksByProject(id);
+  ngOnChanges(): void {
+    this.tracks$ = this.trackService.getTracksByProject(this.projectId).pipe(
+      tap(data => console.log('Tracks fetched for project:', data))
+    );
   }
 }
