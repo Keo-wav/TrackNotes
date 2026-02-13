@@ -94,7 +94,7 @@ export class CommentService {
   async findByTrack(trackId: number): Promise<Comment[]> {
     return this.commentRepository.find({
       where: { track: { id_track: trackId } },
-      relations: ['author', 'parent'], // 'parent' is needed to identify top-level pins
+      relations: ['author', 'parent', 'track', 'project'],
       order: { created_at: 'ASC' },
     });
   }
