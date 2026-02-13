@@ -1,7 +1,7 @@
 import { Component, inject, OnInit} from '@angular/core';
 import {ProjectService} from '../../../../services/project/project.service';
 import {Observable } from 'rxjs';
-import {ProjectDto} from '../../../../models/project.dto';
+import {ProjectDto} from '../../../../models/project/project.dto';
 import {AsyncPipe} from '@angular/common';
 
 @Component({
@@ -17,6 +17,14 @@ export class DashboardProjectsComponent implements OnInit {
   projects$!: Observable<ProjectDto[]>;
 
   ngOnInit(): void {
+    this.loadProjects();
+
+    this.projectService.projectCreated$.subscribe(() => {
+      this.loadProjects();
+    });
+  }
+
+  loadProjects(): void {
     this.projects$ = this.projectService.getProjects();
   }
 }

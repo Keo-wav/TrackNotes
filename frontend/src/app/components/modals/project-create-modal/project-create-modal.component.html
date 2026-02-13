@@ -1,14 +1,14 @@
-<div class="modal-overlay" (click)="close()">
+<div class="modal-overlay">
   <div class="modal-card" (click)="$event.stopPropagation()">
     <div class="modal-header">
-      <h2>Create New Project</h2>
+      <h2>New Project</h2>
       <button type="button" class="close-x" (click)="close()">&times;</button>
     </div>
 
     <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
       <div class="modal-body">
         <div class="form-field">
-          <label for="name">Project Name</label>
+          <label for="name">Project Name*</label>
           <input
             id="name"
             type="text"
