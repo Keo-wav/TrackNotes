@@ -22,6 +22,6 @@ export class TrackService {
   }
 
   getTracksByProject(id: number): Observable<TrackDto[]> {
-    return this.http.get<TrackDto[]>(`${apiUrls.tracks}?id=${id}`);
+    return this.http.get<TrackDto[]>(`${apiUrls.tracks}/project/${id}`);
   }
 }

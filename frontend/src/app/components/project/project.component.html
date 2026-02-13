@@ -1,1 +1,13 @@
-<p>project works!</p>
+@if (project(); as activeProject) {
+  <h2>{{ activeProject.name }}</h2>
+  <div class="container">
+    <div class="column-main">
+      <app-track-list [projectId]="activeProject.id_project"></app-track-list>
+      <app-project-comments></app-project-comments>
+    </div>
+    <div class="column-sidebar">
+      <app-track-player [track]=""></app-track-player>
+      <app-track-comments></app-track-comments>
+    </div>
+  </div>
+}

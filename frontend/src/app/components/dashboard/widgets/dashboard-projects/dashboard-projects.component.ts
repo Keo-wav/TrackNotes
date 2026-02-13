@@ -3,11 +3,13 @@ import {ProjectService} from '../../../../services/project/project.service';
 import {Observable } from 'rxjs';
 import {ProjectDto} from '../../../../models/project/project.dto';
 import {AsyncPipe} from '@angular/common';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-dashboard-projects',
   imports: [
-    AsyncPipe
+    AsyncPipe,
+    RouterLink
   ],
   templateUrl: './dashboard-projects.component.html',
   styleUrl: './dashboard-projects.component.css',

@@ -1,6 +1,9 @@
 <div class="container">
   @for (project of projects$ | async; track project.id_project) {
-    <div class="project-card">
+    <div
+      class="project-card"
+      [routerLink]="['/projects', project.id_project]"
+    >
 <!--      <div class="card-header">-->
 <!--        <i class="pi pi-folder" style="color: #3B82F6;"></i>-->
 <!--        <aside class="project-creation-date">-->
