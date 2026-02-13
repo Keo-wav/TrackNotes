@@ -36,6 +36,15 @@ export class TrackController {
     return TrackMapper.mapTrackEntitiesToDtos(tracks);
   }
 
+  @Get('project/:id')
+  @ApiOperation({ summary: 'Get tracks for one project' })
+  async findByProject(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<TrackDto[]> {
+    const tracks = await this.trackService.findAllByProject(id);
+    return TrackMapper.mapTrackEntitiesToDtos(tracks);
+  }
+
   @Get(':id')
   @ApiOperation({
     summary: 'Get a track with full version history and comment count',

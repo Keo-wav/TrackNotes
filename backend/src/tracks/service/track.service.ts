@@ -41,6 +41,17 @@ export class TrackService {
       .getMany();
   }
 
+  async findAllByProject(id: number): Promise<Track[]> {
+    return this.trackRepository
+      .createQueryBuilder('track')
+      .leftJoinAndSelect('track.uploader', 'uploader')
+      .leftJoinAndSelect('track.project', 'project')
+      .loadRelationCountAndMap('track.commentCount', 'track.comments')
+      .where('track.id_project = :id', { id })
+      .orderBy('track.uploaded_at', 'DESC')
+      .getMany();
+  }
+
   async create(dto: CreateTrackDto): Promise<Track> {
     const newTrack = this.trackRepository.create({
       track_name: dto.track_name,
