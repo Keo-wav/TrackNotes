@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Comment } from '../../comments/entity/comment.entity';
 
 export class TrackDto {
   @ApiProperty({ example: 1 })
@@ -44,6 +45,14 @@ export class TrackDto {
   })
   // Only include children if specifically requested to avoid huge payloads
   child_versions?: TrackDto[];
+
+  @ApiProperty({
+    type: () => Comment,
+    isArray: true,
+    required: false,
+    description: 'List of comments on this track',
+  })
+  comments?: Comment[];
 
   commentCount: number;
 }

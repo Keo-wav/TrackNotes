@@ -6,9 +6,7 @@ import {CreateProjectDto} from '../../../models/project/project-create.dto';
 
 @Component({
   selector: 'app-project-create-modal',
-  imports: [
-    ReactiveFormsModule
-  ],
+  imports: [ReactiveFormsModule],
   templateUrl: './project-create-modal.component.html',
   styleUrl: './project-create-modal.component.css',
 })
