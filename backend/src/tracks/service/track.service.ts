@@ -47,7 +47,7 @@ export class TrackService {
       .leftJoinAndSelect('track.uploader', 'uploader')
       .leftJoinAndSelect('track.project', 'project')
       .loadRelationCountAndMap('track.commentCount', 'track.comments')
-      .where('track.id_project = :id', { id })
+      .where('project.id_project = :id', { id })
       .orderBy('track.uploaded_at', 'DESC')
       .getMany();
   }
