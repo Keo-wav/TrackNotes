@@ -24,16 +24,6 @@ export class TrackPlayerComponent implements AfterViewInit, OnDestroy {
         this.wavesurfer.load('/assets/audio/test.mp3');
       }
     });
-
-    this.trackService.seekRequest$.subscribe(seconds => {
-      if (this.wavesurfer) {
-        const duration = this.wavesurfer.getDuration();
-        if (duration > 0) {
-          this.wavesurfer.seekTo(seconds / duration);
-          this.wavesurfer.play();
-        }
-      }
-    });
   }
 
   ngAfterViewInit() {
