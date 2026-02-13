@@ -12,8 +12,13 @@
   </div>
   <div>
     <ul class="nav-actions">
-      <li class="nav-link" (click)="onAddNewProject()">ADD PROJECT</li>
-<!--      <li class="nav-link">PROFILE</li>-->
+      @if (isDashboard()) {
+        <li class="nav-link" (click)="onAddNewProject()">ADD PROJECT</li>
+      }
+
+      @if (isProjectPage()) {
+        <li class="nav-link">ADD TRACK</li>
+      }
     </ul>
   </div>
 </header>
