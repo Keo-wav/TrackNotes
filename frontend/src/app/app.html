@@ -2,3 +2,9 @@
 <main>
   <router-outlet></router-outlet>
 </main>
+
+@if (modalService.activeModal$ | async; as activeName) {
+  @if (activeName === 'createProject') {
+    <app-project-create-modal></app-project-create-modal>
+  }
+}

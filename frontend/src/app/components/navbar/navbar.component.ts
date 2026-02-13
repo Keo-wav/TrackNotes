@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject} from '@angular/core';
+import { ModalService } from '../../services/modal/modal.service';
 
 @Component({
   selector: 'app-navbar',
@@ -7,5 +8,9 @@ import { Component } from '@angular/core';
   styleUrl: './navbar.component.css',
 })
 export class NavbarComponent {
+  modalService = inject(ModalService);
 
+  onAddNewProject() {
+    this.modalService.open('createProject');
+  }
 }
