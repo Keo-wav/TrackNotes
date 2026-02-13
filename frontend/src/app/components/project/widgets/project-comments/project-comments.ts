@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-project-comments',
@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './project-comments.css',
 })
 export class ProjectComments {
-
+  @Input({ required: true }) projectId!: number;
 }

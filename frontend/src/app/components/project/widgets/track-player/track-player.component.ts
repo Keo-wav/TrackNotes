@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, effect, ElementRef, inject, OnDestroy, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, computed, effect, ElementRef, inject, OnDestroy, ViewChild} from '@angular/core';
 import {TrackService} from '../../../../services/track/track.service';
 import WaveSurfer from 'wavesurfer.js';
 
@@ -14,6 +14,7 @@ export class TrackPlayerComponent implements AfterViewInit, OnDestroy {
 
   trackService = inject(TrackService);
   currentTrack = this.trackService.selectedTrack;
+  comments = computed(() => this.currentTrack()?.comments || []);
   private wavesurfer?: WaveSurfer;
 
   constructor() {
@@ -21,6 +22,16 @@ export class TrackPlayerComponent implements AfterViewInit, OnDestroy {
       const track = this.currentTrack();
       if (track && this.wavesurfer) {
         this.wavesurfer.load('/assets/audio/test.mp3');
+      }
+    });
+
+    this.trackService.seekRequest$.subscribe(seconds => {
+      if (this.wavesurfer) {
+        const duration = this.wavesurfer.getDuration();
+        if (duration > 0) {
+          this.wavesurfer.seekTo(seconds / duration);
+          this.wavesurfer.play();
+        }
       }
     });
   }
@@ -44,6 +55,12 @@ export class TrackPlayerComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
     this.wavesurfer?.destroy();
+  }
+
+  getMarkerPosition(timestamp: number): string {
+    const duration = this.wavesurfer?.getDuration() || 0;
+    if (duration === 0) return '0%';
+    return (timestamp / duration) * 100 + '%';
   }
 
   togglePlay() {

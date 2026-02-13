@@ -14,11 +14,11 @@ export class CommentService {
     return this.http.get<CommentDto[]>(apiUrls.comments);
   }
 
-  getCommentById(id: number): Observable<CommentDto> {
-    return this.http.get<CommentDto>(`${apiUrls.comments}/${id}`)
+  getCommentById(id_comment: number): Observable<CommentDto> {
+    return this.http.get<CommentDto>(`${apiUrls.comments}/${id_comment}`)
   }
 
-  // getCommentsByTrack(id_track: number): Observable<CommentDto[]> {
-  //   return this.http.get<CommentDto[]>(apiUrls.comments);
-  // }
+  getCommentsByTrack(id_track: number): Observable<CommentDto[]> {
+    return this.http.get<CommentDto[]>(`${apiUrls.comments}/track/${id_track}`);
+  }
 }

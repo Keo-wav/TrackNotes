@@ -9,7 +9,12 @@ header {
   justify-content: space-between;
 }
 
+ul {
+  padding: 0;
+}
+
 .nav-actions {
+  padding: 0.5rem;
   display: flex;
   flex-direction: row;
   gap: 1rem;
@@ -18,7 +23,8 @@ header {
 }
 
 .brand-name {
-  font-size: 1.3rem;
+  font-size: 2rem;
+  font-weight: bold;
 }
 
 .motto {

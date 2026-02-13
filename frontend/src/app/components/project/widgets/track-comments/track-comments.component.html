@@ -1,3 +1,32 @@
-<div class="container">
-  <p>Track comments section</p>
+<div class="comments-container">
+  <div class="comments-header">
+    <div class="header-left">
+      <i class="pi pi-comment"></i>
+      <h3>Comments ({{ comments().length }})</h3>
+    </div>
+    <button class="btn-add">Add Comment</button>
+  </div>
+
+  @for (comment of comments(); track comment.id_comment) {
+    <div class="comment-card">
+      <div class="avatar">{{ comment.author_name[0] | uppercase }}</div>
+
+      <div class="comment-content">
+        <div class="comment-meta">
+          <span class="author">{{ comment.author_name }}</span>
+          <span class="timestamp">
+            <i class="pi pi-clock"></i> {{ comment.timestamp }}s
+          </span>
+        </div>
+        <p class="content-text">{{ comment.content }}</p>
+        <button class="btn-reply">
+          <i class="pi pi-reply"></i> Reply
+        </button>
+      </div>
+    </div>
+  } @empty {
+    <div class="no-comments-box">
+      <p class="no-comments">No feedback yet. Be the first to annihilate their artistic self-esteem! 🔥</p>
+    </div>
+  }
 </div>

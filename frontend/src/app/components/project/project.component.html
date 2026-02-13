@@ -3,11 +3,11 @@
   <div class="container">
     <div class="column-main">
       <app-track-list [projectId]="activeProject.id_project"></app-track-list>
-      <app-project-comments></app-project-comments>
+      <app-project-comments [projectId]="activeProject.id_project"></app-project-comments>
     </div>
     <div class="column-sidebar">
       <app-track-player></app-track-player>
-      <app-track-comments></app-track-comments>
+      <app-track-comments [projectId]="activeProject.id_project"></app-track-comments>
     </div>
   </div>
 }
