@@ -46,17 +46,20 @@ export class TrackUploadModalComponent {
 
     if (file && id) {
       this.isUploading.set(true);
+
       this.trackService.uploadTrack(id, file, file.name).subscribe({
         next: (res) => {
           if (typeof res === 'number') {
             this.uploadProgress.set(res);
           } else {
-            // Upload complete
             this.close();
-            // You might want to trigger a list refresh here
+            this.trackService.refreshTracks(res);
           }
         },
-        error: () => this.isUploading.set(false)
+        error: (err) => {
+          console.error('Upload failed', err);
+          this.isUploading.set(false);
+        }
       });
     }
   }

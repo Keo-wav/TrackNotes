@@ -9,9 +9,14 @@ import {FileService} from '../file/file.service';
 @Injectable({ providedIn: 'root' })
 export class TrackService {
   fileService = inject(FileService);
+
   constructor(private http: HttpClient) {}
+
   private _selectedTrack = signal<any | null>(null);
   selectedTrack = this._selectedTrack.asReadonly();
+
+  private _projectTracks = signal<TrackDto[]>([]);
+  projectTracks = this._projectTracks.asReadonly();
 
   selectTrack(track: any) {
     this._selectedTrack.set(track);
@@ -40,6 +45,12 @@ export class TrackService {
     return this.fileService.upload(apiUrls.tracks, file, {
       project_id: projectId,
       track_name: name
+    });
+  }
+
+  refreshTracks(projectId: number) {
+    this.getTracksByProject(projectId).subscribe(tracks => {
+      this._projectTracks.set(tracks);
     });
   }
 }
