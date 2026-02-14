@@ -1,0 +1,43 @@
+<div class="modal-overlay" (click)="close()">
+  <div class="modal-card" (click)="$event.stopPropagation()">
+    <header>
+      <h3>Upload New Track</h3>
+      <button class="close-btn" (click)="close()">&times;</button>
+    </header>
+
+    <div class="upload-zone"
+         [class.drag-over]="dragOver()"
+         (dragover)="dragOver.set(true); $event.preventDefault()"
+         (dragleave)="dragOver.set(false)"
+         (drop)="onDrop($event)">
+
+      @if (!selectedFile()) {
+        <i class="pi pi-cloud-upload"></i>
+        <p>Drag & Drop your audio file here or <label for="fileInput">browse</label></p>
+        <input type="file" id="fileInput" hidden (change)="onFileSelected($event)" accept="audio/*">
+      } @else {
+        <div class="file-info">
+          <i class="pi pi-file-audio"></i>
+          <span>{{ selectedFile()?.name }}</span>
+          <button class="remove-btn" (click)="selectedFile.set(null)" [disabled]="isUploading()">Change</button>
+        </div>
+      }
+    </div>
+
+    @if (isUploading()) {
+      <div class="progress-container">
+        <div class="progress-bar" [style.width.%]="uploadProgress()"></div>
+        <span class="progress-text">{{ uploadProgress() }}%</span>
+      </div>
+    }
+
+    <footer>
+      <button class="btn-secondary" (click)="close()" [disabled]="isUploading()">Cancel</button>
+      <button class="btn-primary"
+              [disabled]="!selectedFile() || isUploading()"
+              (click)="upload()">
+        {{ isUploading() ? 'Uploading...' : 'Confirm Upload' }}
+      </button>
+    </footer>
+  </div>
+</div>
