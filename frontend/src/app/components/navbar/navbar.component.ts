@@ -31,4 +31,8 @@ export class NavbarComponent {
 
   isDashboard = computed(() => this.url().includes('/dashboard') || this.url() === '/');
   isProjectPage = computed(() => this.url().includes('/projects/'));
+
+  onAddNewTrack() {
+    this.modalService.open('uploadTrack');
+  }
 }
